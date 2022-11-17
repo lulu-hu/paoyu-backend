@@ -1,15 +1,15 @@
-package com.lulu.usercenter.Model.domain.request;
+package com.lulu.usercenter.Model.request;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * 用户注册请求体
+ * 用户登录请求体
  * @author lulu
  */
 @Data
-public class UserRegisterRequest implements Serializable {
+public class UserLoginRequest implements Serializable {
 
     private static final long serialVersionUID = -3212097559203692967L;
 
@@ -17,5 +17,4 @@ public class UserRegisterRequest implements Serializable {
 
     private String userPassword;
 
-    private String checkPassword;
 }

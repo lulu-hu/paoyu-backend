@@ -1,11 +1,10 @@
 package com.lulu.usercenter.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lulu.usercenter.Model.domain.User;
-import com.lulu.usercenter.Model.domain.request.UserLoginRequest;
-import com.lulu.usercenter.Model.domain.request.UserRegisterRequest;
+import com.lulu.usercenter.Model.request.UserLoginRequest;
+import com.lulu.usercenter.Model.request.UserRegisterRequest;
 import com.lulu.usercenter.common.BaseResponse;
 import com.lulu.usercenter.common.ErrorCode;
 import com.lulu.usercenter.common.ResultUtils;
@@ -14,17 +13,14 @@ import com.lulu.usercenter.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.lulu.usercenter.contant.UserConstant.ADMIN_ROLE;
 import static com.lulu.usercenter.contant.UserConstant.USER_LOGIN_STATE;
 
 /**
