@@ -3,6 +3,12 @@ package com.lulu.usercenter.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lulu.usercenter.Model.domain.Team;
 import com.lulu.usercenter.Model.domain.User;
+import com.lulu.usercenter.Model.dto.TeamQuery;
+import com.lulu.usercenter.Model.request.TeamJoinRequest;
+import com.lulu.usercenter.Model.request.TeamUpdateRequest;
+import com.lulu.usercenter.Model.vo.TeamUserVO;
+
+import java.util.List;
 
 
 /**
@@ -19,4 +25,27 @@ public interface TeamService extends IService<Team> {
      */
     long addTeam(Team team, User loginUser);
 
+    /**
+     *  搜索队伍
+     * @param teamQuery
+     * @param isAdmin
+     * @return
+     */
+    List<TeamUserVO> listTeams(TeamQuery teamQuery, boolean isAdmin);
+
+    /**
+     *  更新队伍
+     * @param teamUpdateRequest
+     * @param loginUser
+     * @return
+     */
+    boolean updateTeam(TeamUpdateRequest teamUpdateRequest, User loginUser);
+
+    /**
+     *  加入队伍
+     * @param teamJoinRequest
+     * @param loginUser
+     * @return
+     */
+    boolean joinTeam(TeamJoinRequest teamJoinRequest,User loginUser);
 }

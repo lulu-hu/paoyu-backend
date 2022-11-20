@@ -39,7 +39,7 @@ public class PreCacheJob {
     // 重点用户
     private List<Long> mainUserList = Arrays.asList(1L);
 
-    @Scheduled(cron = "0 12 16 * * *")
+    @Scheduled(cron = "0 12 23 * * *")
     public void doCacheRecommendUser() {
         RLock lock = redissonClient.getLock("paoyu:precachejob:docache:lock");
         try {

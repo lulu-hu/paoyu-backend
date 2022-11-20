@@ -6,23 +6,23 @@ import com.lulu.usercenter.Model.domain.Team;
 import com.lulu.usercenter.Model.domain.User;
 import com.lulu.usercenter.Model.dto.TeamQuery;
 import com.lulu.usercenter.Model.request.TeamAddRequest;
+import com.lulu.usercenter.Model.request.TeamJoinRequest;
+import com.lulu.usercenter.Model.request.TeamUpdateRequest;
+import com.lulu.usercenter.Model.vo.TeamUserVO;
 import com.lulu.usercenter.common.BaseResponse;
 import com.lulu.usercenter.common.ErrorCode;
 import com.lulu.usercenter.common.ResultUtils;
 import com.lulu.usercenter.exception.BusinessException;
 import com.lulu.usercenter.service.TeamService;
 import com.lulu.usercenter.service.UserService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.lulu.usercenter.contant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * 用户接口
@@ -65,11 +65,12 @@ public class TeamController {
     }
 
     @PostMapping("/update")
-    public BaseResponse<Boolean> updateTeam(@RequestBody Team team){
-        if(team == null){
+    public BaseResponse<Boolean> updateTeam(@RequestBody TeamUpdateRequest teamUpdateRequest, HttpServletRequest request){
+        if(teamUpdateRequest == null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        boolean update = teamService.updateById(team);
+        User loginUser = userService.getLoginUser(request);
+        boolean update = teamService.updateTeam(teamUpdateRequest,loginUser) ;
         if(!update){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"更新失败");
         }
@@ -77,7 +78,7 @@ public class TeamController {
     }
 
     @GetMapping("/get")
-    public BaseResponse<Team> getTeamById(@RequestBody long id){
+    public BaseResponse<Team> getTeamById(long id){
         if(id <= 0){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -88,15 +89,25 @@ public class TeamController {
         return ResultUtils.success(team);
     }
 
+//    @GetMapping("/list")
+//    public BaseResponse<List<Team>> listTeam(TeamQuery teamQuery){
+//        if(teamQuery == null){
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        Team team = new Team();
+//        BeanUtils.copyProperties(teamQuery,team);
+//        QueryWrapper<Team> queryWrapper = new QueryWrapper<>(team);
+//        List<Team> teamList = teamService.list(queryWrapper);
+//        return ResultUtils.success(teamList);
+//    }
+
     @GetMapping("/list")
-    public BaseResponse<List<Team>> listTeam(TeamQuery teamQuery){
+    public BaseResponse<List<TeamUserVO>> listTeam(TeamQuery teamQuery, HttpServletRequest request){
         if(teamQuery == null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        Team team = new Team();
-        BeanUtils.copyProperties(teamQuery,team);
-        QueryWrapper<Team> queryWrapper = new QueryWrapper<>(team);
-        List<Team> teamList = teamService.list(queryWrapper);
+        boolean isAdmin = userService.isAdmin(request);
+        List<TeamUserVO> teamList = teamService.listTeams(teamQuery,isAdmin);
         return ResultUtils.success(teamList);
     }
 
@@ -112,5 +123,16 @@ public class TeamController {
         Page<Team> resultPage = teamService.page(page,queryWrapper);
         return ResultUtils.success(resultPage);
     }
+
+    @PostMapping("/join")
+    public BaseResponse<Boolean> joinTeam(@RequestBody TeamJoinRequest teamJoinRequest, HttpServletRequest request){
+            if(teamJoinRequest == null){
+                throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            }
+            User loginUser = userService.getLoginUser(request);
+            boolean result = teamService.joinTeam(teamJoinRequest,loginUser);
+            return ResultUtils.success(result);
+    }
+
 
 }
