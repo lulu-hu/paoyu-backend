@@ -11,14 +11,14 @@ import javax.annotation.Resource;
  * @author lulu
  * @date 2022/11/15 15:09
  */
-@SpringBootTest
+//@SpringBootTest
 public class Redisson {
 
     @Resource
     private RedissonClient redissonClient;
 
 
-    @Test
+    //@Test
     void test(){
         RList<String> rList = redissonClient.getList("redisson_list");
 //        rList.add("lulu");

@@ -30,7 +30,7 @@ import static com.lulu.usercenter.contant.UserConstant.USER_LOGIN_STATE;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@CrossOrigin(origins = "http://127.0.0.1:5173/",allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
 public class UserController {
 
     @Resource
@@ -42,13 +42,13 @@ public class UserController {
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest){
         if(userRegisterRequest == null){
-            return ResultUtils.error(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
         if(StringUtils.isAnyBlank(userAccount,userPassword,checkPassword)){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+           return null;
         }
         long result = userService.userRegister(userAccount, userPassword, checkPassword);
 //        return new BaseResponse<>(0,result,"ok");
@@ -58,7 +58,7 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request){
         if(userLoginRequest == null){
-            return ResultUtils.error(ErrorCode.PARAMS_ERROR);
+            return ResultUtils.error(ErrorCode.NOT_LOGIN);
 //            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 
@@ -85,7 +85,7 @@ public class UserController {
         Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
         User currentUser = (User) userObj;
         if(currentUser == null){
-            throw new BusinessException(ErrorCode.NOT_LOGIN);
+            throw new BusinessException(40100,"未登录","");
         }
         Long userId = currentUser.getId();
         //TODO 校验用户是否合法
@@ -167,7 +167,23 @@ public class UserController {
         User loginUser = userService.getLoginUser(request);
         Integer result = userService.updateUser(user,loginUser);
         return ResultUtils.success(result);
-
     }
+
+    /**
+     * 获取最匹配的用户
+     *
+     * @param num
+     * @param request
+     * @return
+     */
+    @GetMapping("/match")
+    public BaseResponse<List<User>> matchUsers(long num, HttpServletRequest request) {
+        if (num <= 0 || num > 20) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User user = userService.getLoginUser(request);
+        return ResultUtils.success(userService.matchUsers(num, user));
+    }
+
 
 }

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@MapperScan("com.lulu.usercenter.Mapper")
+@MapperScan("com.lulu.user-center.Mapper")
 @EnableScheduling
 public class UserCenterApplication {
 

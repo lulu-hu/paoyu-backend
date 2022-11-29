@@ -5,7 +5,9 @@ package com.lulu.usercenter.common;
  * @author lulu
  */
 public enum ErrorCode {
-
+    /**
+     *
+     */
     SUCCESS(0,"ok",""),
     PARAMS_ERROR(40000,"请求参数错误",""),
     NULL_ERROR(40001,"请求数据为空",""),

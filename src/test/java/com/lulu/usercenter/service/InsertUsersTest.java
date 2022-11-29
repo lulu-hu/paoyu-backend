@@ -15,7 +15,7 @@ import java.util.concurrent.*;
  * @author lulu
  * @date 2022/11/11 15:09
  */
-@SpringBootTest
+//@SpringBootTest
 public class InsertUsersTest {
 
     @Resource
@@ -31,7 +31,7 @@ public class InsertUsersTest {
      *  批量插入用户
      */
 
-    @Test
+    //@Test
     public void doInsertUsers(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -61,13 +61,13 @@ public class InsertUsersTest {
     /**
      * 并发批量插入用户
      */
-    @Test
+    //@Test
     public void doConcurrencyInsertUsers() {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
         // 分十组
-        int batchSize = 50;
+        int batchSize = 5;
         int j = 0;
         List<CompletableFuture<Void>> futureList = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
@@ -79,7 +79,7 @@ public class InsertUsersTest {
                 user.setUserAccount("jialulu");
                 user.setAvatarUrl("https://tse2-mm.cn.bing.net/th/id/OIP-C._u--TL_D0EQIhFrxzltDFgHaHa?w=215&h=215&c=7&r=0&o=5&dpr=1.3&pid=1.7");
                 user.setGender(0);
-                user.setUserPassword(DigestUtils.md5DigestAsHex((SALT + passWord).getBytes()));
+                user.setUserPassword(DigestUtils.md5DigestAsHex(passWord.getBytes()));
                 user.setEmail("123456@qq.com");
                 user.setTags("[]");
                 user.setUserStatus(0);
@@ -103,10 +103,10 @@ public class InsertUsersTest {
         System.out.println(stopWatch.getTotalTimeMillis());
     }
 
-    @Test
+   // @Test
     public void test(){
 
-        String res = DigestUtils.md5DigestAsHex((SALT+passWord).getBytes());
+        String res = DigestUtils.md5DigestAsHex(passWord.getBytes());
         System.out.println(res);
     }
 

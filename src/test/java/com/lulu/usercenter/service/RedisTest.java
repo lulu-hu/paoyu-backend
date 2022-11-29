@@ -19,7 +19,7 @@ public class RedisTest {
     @Resource
     private RedisTemplate redisTemplate;
 
-    @Test
+    //@Test
     void test(){
         ValueOperations valueOperations = redisTemplate.opsForValue();
         //增

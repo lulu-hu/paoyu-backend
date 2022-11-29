@@ -5,6 +5,7 @@ import com.lulu.usercenter.Model.domain.Team;
 import com.lulu.usercenter.Model.domain.User;
 import com.lulu.usercenter.Model.dto.TeamQuery;
 import com.lulu.usercenter.Model.request.TeamJoinRequest;
+import com.lulu.usercenter.Model.request.TeamQuitRequest;
 import com.lulu.usercenter.Model.request.TeamUpdateRequest;
 import com.lulu.usercenter.Model.vo.TeamUserVO;
 
@@ -48,4 +49,19 @@ public interface TeamService extends IService<Team> {
      * @return
      */
     boolean joinTeam(TeamJoinRequest teamJoinRequest,User loginUser);
+
+    /**
+     *  退出退伍
+     * @param teamQuitRequest
+     * @param loginUser
+     * @return
+     */
+    boolean quitTeam(TeamQuitRequest teamQuitRequest, User loginUser);
+
+    /**
+     *  解散队伍
+     * @param id
+     * @return
+     */
+    boolean deleteTeam(long id,User loginUser);
 }

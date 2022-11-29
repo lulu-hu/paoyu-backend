@@ -4,6 +4,8 @@ import com.lulu.usercenter.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 
 /**
  *  查询封装类
@@ -18,6 +20,11 @@ public class TeamQuery extends PageRequest {
      * id
      */
     private Long id;
+
+    /**
+     * id 对表
+     */
+    private List<Long> idList;
 
     /**
      *  搜索关键词（同时对队伍名称和描述搜索）
